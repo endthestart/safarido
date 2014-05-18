@@ -1,0 +1,4 @@
+{% for todo in todo_list.todos.all %}
+    <h2>{{ todo.title }}</h2>
+    <p>{{ todo.description }}</p>
+{% endfor %}

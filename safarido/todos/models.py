@@ -19,7 +19,7 @@ class TodoList(TimestampedModel):
 
 
 class Todo(TimestampedModel):
-    list = models.ForeignKey(TodoList)
+    list = models.ForeignKey(TodoList, related_name='todos')
     title = models.CharField(_('title'), max_length=200)
     description = models.TextField(_('description'))
 
