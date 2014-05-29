@@ -13,14 +13,6 @@ class TimestampedModel(models.Model):
 
 
 class TodoList(TimestampedModel):
-#     owner = models.ForeignKey(
-#         settings.AUTH_USER_MODEL
-#     )
-#     users = models.ManyToManyField(
-#         settings.AUTH_USER_MODEL,
-#         verbose_name=_('users'),
-#         related_name=_('todo_lists'),
-#     )
     title = models.CharField(
         _('title'),
         max_length=50,
@@ -47,7 +39,7 @@ class TodoList(TimestampedModel):
     def save(self, **kwargs):
         # Generate a slug if there is not one
         if self.title and not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.title)
 
         super(TodoList, self).save(**kwargs)
 
@@ -56,6 +48,10 @@ class TodoList(TimestampedModel):
 
     class Meta:
         ordering = ('title', )
+        permissions = (
+            ('is_owner', 'Is Owner'),
+            ('view_todo_list', 'View Todo List'),
+        )
 
 
 class Todo(TimestampedModel):
