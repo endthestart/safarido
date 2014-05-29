@@ -190,12 +190,11 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     # 'django.contrib.admindocs',
-
-    'todos',
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
+    'todos',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -247,7 +246,28 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 INSTALLED_APPS += (
     # Database migration helpers:
     'south',
+    'custom_auth',
+    'guardian',
 )
 # Don't need to use South when setting up a test database.
 SOUTH_TESTS_MIGRATE = False
 ########## END SOUTH CONFIGURATION
+
+
+########## DJANGO CUSTOM AUTH CONFIGURATION
+# See: https://github.com/endthestart/django-custom-auth/
+# See: https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
+# See: http://django-guardian.readthedocs.org/en/v1.2/configuration.html
+AUTHENTICATION_BACKENDS = (
+    'custom_auth.auth.Authenticate',
+    'guardian.backends.ObjectPermissionBackend',
+)
+AUTH_USER_MODEL = 'custom_auth.User'
+########## END DJANGO CUSTOM AUTH CONFIGURATION
+
+
+########## GUARDIAN CONFIGURATION
+# See: http://django-guardian.readthedocs.org/en/v1.2/configuration.html
+# Disable Anonymous Users
+ANONYMOUS_USER_ID = None
+########## END GUARDIAN CONFIGURATION
