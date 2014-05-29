@@ -190,6 +190,8 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     # 'django.contrib.admindocs',
+
+    'rest_framework',
 )
 
 # Apps specific for this project go here.
