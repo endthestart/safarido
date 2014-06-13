@@ -1,38 +1,13 @@
 ========================
-django-twoscoops-project
+Safari-Do
 ========================
 
-A project template for Django 1.6 (with a tag for Django 1.5).
-
-To use this project follow these steps:
-
-#. Create your working environment
-#. Install Django
-#. Create the new project using the django-two-scoops template
-#. Install additional dependencies
-#. Use the Django admin to create the project
-
-*note: these instructions show creation of a project called "icecream".  You
-should replace this name with the actual name of your project.*
+A Todo manager from Safari
 
 Working Environment
 ===================
 
-You have several options in setting up your working environment.  We recommend
-using virtualenv to separate the dependencies of your project from your system's
-python environment.  If on Linux or Mac OS X, you can also use virtualenvwrapper to help manage multiple virtualenvs across different projects.
-
-Virtualenv Only
----------------
-
-First, make sure you are using virtualenv (http://www.virtualenv.org). Once
-that's installed, create your virtualenv::
-
-    $ virtualenv --distribute icecream
-
-You will also need to ensure that the virtualenv has the project directory
-added to the path. Adding the project directory will allow `django-admin.py` to
-be able to change settings using the `--settings` flag.
+How to configure your virtual environment:
 
 Virtualenv with virtualenvwrapper
 ------------------------------------
@@ -41,33 +16,16 @@ In Linux and Mac OSX, you can install virtualenvwrapper (http://virtualenvwrappe
 which will take care of managing your virtual environments and adding the
 project path to the `site-directory` for you::
 
-    $ mkdir icecream
-    $ mkvirtualenv -a icecream icecream-dev
-    $ cd icecream && add2virtualenv `pwd`
+    $ mkvirtualenv safarido
 
-Using virtualenvwrapper with Windows
-----------------------------------------
-
-TBD
-
-Installing Django
+Configuring the project
 =================
 
 To install Django in the new virtual environment, run the following command::
 
-    $ pip install django
-
-Creating your project
-=====================
-
-To create a new Django project called '**icecream**' using
-django-twoscoops-project, run the following command::
-
-    $ django-admin.py startproject --template=https://github.com/twoscoops/django-twoscoops-project/archive/master.zip --extension=py,rst,html icecream_project
-    
-For Django 1.5 users, we recommend::
-
-    $ django-admin.py startproject --template=https://github.com/twoscoops/django-twoscoops-project/archive/1.5.zip --extension=py,rst,html icecream_project
+    $ git clone
+    $ pip install -r requirements/local.txt
+    $ ./manage.py syncdb --migrate
 
 Installation of Dependencies
 =============================
@@ -83,12 +41,4 @@ For production::
     $ pip install -r requirements.txt
 
 *note: We install production requirements this way because many Platforms as a
-Services expect a requirements.txt file in the root of projects.*
-
-Acknowledgements
-================
-
-- Many thanks to Randall Degges for the inspiration to write the book and django-skel.
-- All of the contributors_ to this project.
-
-.. _contributors: https://github.com/twoscoops/django-twoscoops-project/blob/master/CONTRIBUTORS.txt
+Service expect a requirements.txt file in the root of projects.*

@@ -191,6 +191,8 @@ DJANGO_APPS = (
     'django.contrib.admin',
     # 'django.contrib.admindocs',
 
+    'custom_auth',
+    'guardian',
     'rest_framework',
 )
 
@@ -248,8 +250,6 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 INSTALLED_APPS += (
     # Database migration helpers:
     'south',
-    'custom_auth',
-    'guardian',
 )
 # Don't need to use South when setting up a test database.
 SOUTH_TESTS_MIGRATE = False
@@ -273,3 +273,20 @@ AUTH_USER_MODEL = 'custom_auth.User'
 # Disable Anonymous Users
 ANONYMOUS_USER_ID = None
 ########## END GUARDIAN CONFIGURATION
+
+
+########## REST FRAMEWORK CONFIGURATION
+# See: http://www.django-rest-framework.org/#installation
+REST_FRAMEWORK = {
+    # Use hyperlinked styles by default.
+    # Only used if the `serializer_class` attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+########## END REST FRAMEWORK CONFIGURATION

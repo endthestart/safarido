@@ -50,7 +50,7 @@ class TodoList(TimestampedModel):
         ordering = ('title', )
         permissions = (
             ('is_owner', 'Is Owner'),
-            ('view_todo_list', 'View Todo List'),
+            ('can_view', 'View Todo List'),
         )
 
 
