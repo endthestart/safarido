@@ -1,55 +1,35 @@
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from guardian.shortcuts import get_objects_for_user
 
+from rest_framework import generics
+from rest_framework.filters import DjangoObjectPermissionsFilter
+
+from .permissions import SafaridoObjectPermissions
 from .models import TodoList, Todo
 from .serializers import TodoListSerializer, TodoSerializer
 
 
-class TodoListView(APIView):
+class TodoListView(generics.ListCreateAPIView):
     """
     List all Todo Lists, or create a new Todo List.
     """
     model = TodoList
-    def get(self, request, format=None):
-        todo_lists = TodoList.objects.all()
-        self.check_object_permissions(self.request, todo_lists)
-        serializer = TodoListSerializer(todo_lists, many=True)
-        return Response(serializer.data)
+    serializer_class = TodoListSerializer
 
-    def post(self, request, format=None):
-        serializer = TodoListSerializer(data=request.DATA)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        return get_objects_for_user(self.request.user, 'view_todolist', klass=TodoList)
+
+    def pre_save(self, obj):
+        obj.owner = self.request.user
 
 
-class TodoListDetail(APIView):
+class TodoListDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update, or delete a TodoList instance.
     """
-    model = TodoList
-    def get_object(self, pk):
-        todo_list = get_object_or_404(TodoList, pk=pk)
-        self.check_object_permissions(self.request, todo_list)
-        return todo_list
+    queryset = TodoList.objects.all()
+    serializer_class = TodoListSerializer
+    filter_backends = (DjangoObjectPermissionsFilter,)
+    permission_classes = (SafaridoObjectPermissions,)
 
-    def get(self, request, pk, format=None):
-        todo_list = self.get_object(pk)
-        serializer = TodoListSerializer(todo_list)
-        return Response(serializer.data)
-
-    def put(self, request, pk, format=None):
-        todo_list = self.get_object(pk)
-        serializer = TodoListSerializer(todo_list, data=request.DATA)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, format=None):
-        todo_list = self.get_object(pk)
-        todo_list.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def pre_save(self, obj):
+        obj.owner = self.request.user

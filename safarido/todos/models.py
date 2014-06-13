@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
@@ -13,6 +14,10 @@ class TimestampedModel(models.Model):
 
 
 class TodoList(TimestampedModel):
+    owner = models.ForeignKey(
+        User,
+        related_name='todo_lists',
+    )
     title = models.CharField(
         _('title'),
         max_length=50,
@@ -48,13 +53,13 @@ class TodoList(TimestampedModel):
 
     class Meta:
         ordering = ('title', )
-        permissions = (
-            ('is_owner', 'Is Owner'),
-            ('can_view', 'View Todo List'),
-        )
 
 
 class Todo(TimestampedModel):
+    owner = models.ForeignKey(
+        User,
+        related_name='todos',
+    )
     list = models.ForeignKey(
         TodoList,
         related_name='todos',
@@ -68,7 +73,7 @@ class Todo(TimestampedModel):
     assigned_to = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         verbose_name=_('users'),
-        related_name='todos',
+        related_name='assigned_todos',
     )
     due_date = models.DateField(
         verbose_name=_('due date'),

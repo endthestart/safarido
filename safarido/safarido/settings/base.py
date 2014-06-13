@@ -260,10 +260,10 @@ SOUTH_TESTS_MIGRATE = False
 # See: https://github.com/endthestart/django-custom-auth/
 # See: https://docs.djangoproject.com/en/dev/topics/auth/customizing/#referencing-the-user-model
 # See: http://django-guardian.readthedocs.org/en/v1.2/configuration.html
-# AUTHENTICATION_BACKENDS = (
-#     'custom_auth.auth.Authenticate',
-#     'guardian.backends.ObjectPermissionBackend',
-# )
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
 # AUTH_USER_MODEL = 'custom_auth.User'
 ########## END DJANGO CUSTOM AUTH CONFIGURATION
 
@@ -286,7 +286,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissions'
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 ########## END REST FRAMEWORK CONFIGURATION
