@@ -11,8 +11,10 @@ class TodoListView(APIView):
     """
     List all Todo Lists, or create a new Todo List.
     """
+    model = TodoList
     def get(self, request, format=None):
         todo_lists = TodoList.objects.all()
+        self.check_object_permissions(self.request, todo_lists)
         serializer = TodoListSerializer(todo_lists, many=True)
         return Response(serializer.data)
 
@@ -28,8 +30,10 @@ class TodoListDetail(APIView):
     """
     Retrieve, update, or delete a TodoList instance.
     """
+    model = TodoList
     def get_object(self, pk):
         todo_list = get_object_or_404(TodoList, pk=pk)
+        self.check_object_permissions(self.request, todo_list)
         return todo_list
 
     def get(self, request, pk, format=None):
